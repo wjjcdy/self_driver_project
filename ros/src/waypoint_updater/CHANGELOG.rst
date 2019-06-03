@@ -1,6 +1,11 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package waypoint_updater 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-6-3
+-------------------
+* Modified waypoint_tree KDTREE has been initialized, the get_closest_waypoint_idx function can work
+* Modified a bug, change a variable name from pos to pos_current
+* Add publish_waypoints function used publish_waypoints 200 points in front of the car pose
 
 2019-5-30
 -------------------
