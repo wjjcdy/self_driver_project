@@ -4,7 +4,7 @@ import rospy
 from geometry_msgs.msg import PoseStamped
 from styx_msgs.msg import Lane, Waypoint
 from scipy.spatial import KDTree
-
+import numpy as np
 import math
 
 '''
@@ -44,29 +44,28 @@ class WaypointUpdater(object):
         self.waypoints_2d = None
         self.waypoint_tree = None
         self.loop()
-        rospy.spin()
     
     def loop(self):
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
-            if self.pose_current and self.base_waypoints:
+            if self.pose_current and self.waypoint_tree:
                 # Get closest waypoint
                 closest_waypoint_idx = self.get_closest_waypoint_idx()
                 self.publish_waypoints(closest_waypoint_idx)
                 rate.sleep()
     
     def get_closest_waypoint_idx(self):
-        x = self.pose.pose.position.x
-        y = self.pose.pose.position.y
+        x = self.pose_current.pose.position.x
+        y = self.pose_current.pose.position.y
         closest_idx = self.waypoint_tree.query([x,y],1)[1]
 
-        # Check if closest is ahead or behind vehicle
+        # Check if closest is ahead or behind vehicles
         closest_coord = self.waypoints_2d[closest_idx]
         pre_coord = self.waypoints_2d[closest_idx-1]
 
         # Equation for hyperplane through closest_coords
         cl_vect = np.array(closest_coord)
-        prev_vect = np.array(prev_coord)
+        prev_vect = np.array(pre_coord)
         pos_vect = np.array([x,y])
 
         val = np.dot(cl_vect-prev_vect,pos_vect-cl_vect)
@@ -74,6 +73,12 @@ class WaypointUpdater(object):
         if val > 0:
             closest_idx = (closest_idx + 1)% len(self.waypoints_2d)
         return closest_idx
+
+    def publish_waypoints(self,closest_idx):
+        lane = Lane()
+        lane.header = self.base_waypoints.header
+        lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx + LOOKAHEAD_WPS]
+        self.final_waypoints_pub.publish(lane)
 
     def pose_cb(self, msg):
         # TODO: Implement
