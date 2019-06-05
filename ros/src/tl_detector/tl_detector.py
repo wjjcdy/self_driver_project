@@ -10,6 +10,7 @@ from light_classification.tl_classifier import TLClassifier
 from scipy.spatial import KDTree
 import tf
 import cv2
+import numpy as np
 import yaml
 
 STATE_COUNT_THRESHOLD = 3
@@ -38,6 +39,8 @@ class TLDetector(object):
 
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
+        # List of positions that correspond to the line to stop in front of for a given intersection
+        self.stop_line_positions = self.config['stop_line_positions']
 
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
@@ -52,6 +55,8 @@ class TLDetector(object):
 
         self.waypoint_tree = None
         self.waypoints_2d = None
+
+
         rospy.spin()
 
     def pose_cb(self, msg):
@@ -107,7 +112,21 @@ class TLDetector(object):
         """
         #TODO implement
         closest_idx = self.waypoint_tree.query([x,y],1)[1]
-        return 0
+
+        # Check if closest is ahead or behind vehicles
+        closest_coord = self.waypoints_2d[closest_idx]
+        pre_coord = self.waypoints_2d[closest_idx-1]
+
+        # Equation for hyperplane through closest_coords
+        cl_vect = np.array(closest_coord)
+        prev_vect = np.array(pre_coord)
+        pos_vect = np.array([x,y])
+
+        val = np.dot(cl_vect-prev_vect,pos_vect-cl_vect)
+
+        if val > 0:
+            closest_idx = (closest_idx + 1)% len(self.waypoints_2d)
+        return closest_idx
 
     def get_light_state(self, light):
         """Determines the current color of the traffic light
@@ -141,15 +160,13 @@ class TLDetector(object):
         closest_light = None
         line_wp_idx = None
 
-        # List of positions that correspond to the line to stop in front of for a given intersection
-        stop_line_positions = self.config['stop_line_positions']
         if(self.pose):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x,self.pose.pose.position.y)
 
         #TODO find the closest visible traffic light (if one exists)
         diff = len(self.waypoints.waypoints)
         for i, light in enumerate(self.lights):
-            line = stop_line_positions[i]
+            line = self.stop_line_positions[i]
             temp_wp_idx = self.get_closest_waypoint(line[0],line[1])
             d = temp_wp_idx - car_wp_idx
             if d >=0 and d < diff:
