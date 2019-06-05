@@ -1,6 +1,12 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package waypoint_updater 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-6-5
+-------------------
+* Add traffic_light callback function to get traffic point index
+* Modified the type of '/traffic_waypoint' as Int32
+* Modified the publish_waypoints based on traffic_light, need stop the stopline when light is red
+
 2019-6-3
 -------------------
 * Modified waypoint_tree KDTREE has been initialized, the get_closest_waypoint_idx function can work
