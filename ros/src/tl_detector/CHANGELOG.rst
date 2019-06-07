@@ -2,6 +2,12 @@
 Changelog for package tl_detector 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2019-6-7
+-------------------
+* Add receive a traffic light picture and save png file used for check and deeplearning data
+* Add receive traffic state save .csv file for deeplearning data
+
+
 2019-6-5
 -------------------
 * Modified the closest function, old code just find the closet point, did not care the need front the car
