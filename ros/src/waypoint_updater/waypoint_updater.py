@@ -23,8 +23,8 @@ as well as to verify your TL classifier.
 TODO (for Yousuf and Aaron): Stopline location for each traffic light.
 '''
 
-LOOKAHEAD_WPS = 200 # Number of waypoints we will publish. You can change this number
-MAX_DECEL = 10      # Max acceleration is 10 m/s^2
+LOOKAHEAD_WPS = 100 # Number of waypoints we will publish. You can change this number
+MAX_DECEL = 10       # Max acceleration is 10 m/s^2
 MAX_JERK = 10       # Max jerk is 10 m/s^2
 
 class WaypointUpdater(object):
@@ -98,7 +98,7 @@ class WaypointUpdater(object):
     def decelerate(self, waypoints, closest_idx):
         temp_waypoints = []
         # Get stop idx which the car must stop in front of the stopline, rospy.logerrthe lenth of car is about 2 points
-        stop_idx = max(0, self.stopline_wp_idx - closest_idx - 2) 
+        stop_idx = max(0, self.stopline_wp_idx - closest_idx - 10) 
         for i, wp in enumerate(waypoints):
             dist_i = self.distance(waypoints, i, stop_idx)
             # Get target speed which can stop in dist_is distance, can used dist*a = 0.5*a*t^2 *a

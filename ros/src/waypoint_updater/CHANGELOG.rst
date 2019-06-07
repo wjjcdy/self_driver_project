@@ -1,6 +1,10 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package waypoint_updater 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-6-7
+* Modified LOOKAHEAD_WPS from 200 to 100 to optimizate delay problem
+* Modified stop stopline in front 10 point from 2 point to stop in front of stopline  
+
 2019-6-5
 -------------------
 * Add traffic_light callback function to get traffic point index
