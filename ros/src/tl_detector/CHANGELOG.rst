@@ -1,6 +1,20 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package tl_detector 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-6-18
+* Add getting only classfied red max score 
+* Add return red light state only if max score bigger than thresh by set
+
+2019-6-17
+* Add get_light status from the classfier of the light image in tl_detector.py 
+* Modified process classfying each 3 images 
+* Add light classfier function for image from tensorflow object detection tutorial
+* Add tensorflow object detection API training model 
+* Add light classfier result image imshow
+
+2019-6-15
+* Delete create .csv file
+* Change save .png file name
 
 2019-6-7
 -------------------

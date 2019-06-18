@@ -1,6 +1,9 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package waypoint_updater 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-6-18
+* Modified LOOKAHEAD_WPS from 100 to 40 to optimizate delay problem
+
 2019-6-7
 * Modified LOOKAHEAD_WPS from 200 to 100 to optimizate delay problem
 * Modified stop stopline in front 10 point from 2 point to stop in front of stopline  
