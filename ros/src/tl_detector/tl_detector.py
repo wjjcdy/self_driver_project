@@ -46,7 +46,7 @@ class TLDetector(object):
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
-        self.light_classifier = TLClassifier()
+        
         self.listener = tf.TransformListener()
 
         self.state = TrafficLight.UNKNOWN
@@ -59,9 +59,9 @@ class TLDetector(object):
 
         self.has_image = False
         self.light_image_num = 0
-
-        self.out = open('data/light.csv','a')
-        self.csv_write = csv.writer(self.out,dialect='excel')
+        self.light_classifier = TLClassifier()
+  
+        self.light_image_cnt=0
         rospy.spin()
 
     def pose_cb(self, msg):
@@ -85,21 +85,21 @@ class TLDetector(object):
         """
         self.has_image = True
         self.camera_image = msg
-         
-        
-        if self.waypoint_tree:
-            light_wp, state = self.process_traffic_lights()
-            if self.state != state:
-                self.state_count = 0
-                self.state = state
-            elif self.state_count >= STATE_COUNT_THRESHOLD:
-                self.last_state = self.state
-                light_wp = light_wp if state == TrafficLight.RED else -1
-                self.last_wp = light_wp
-                self.upcoming_red_light_pub.publish(Int32(light_wp))
-            else:
-                self.upcoming_red_light_pub.publish(Int32(self.last_wp))
-            self.state_count += 1
+        self.light_image_cnt = self.light_image_cnt +1
+        if self.light_image_cnt%3 ==0 :
+            if self.waypoint_tree:
+                light_wp, state = self.process_traffic_lights()
+                if self.state != state:
+                    self.state_count = 0
+                    self.state = state
+                elif self.state_count >= STATE_COUNT_THRESHOLD:
+                    self.last_state = self.state
+                    light_wp = light_wp if state == TrafficLight.RED else -1
+                    self.last_wp = light_wp
+                    self.upcoming_red_light_pub.publish(Int32(light_wp))
+                else:
+                    self.upcoming_red_light_pub.publish(Int32(self.last_wp))
+                self.state_count += 1
         '''
         Publish upcoming red lights at camera frequency.
         Each predicted state has to occur `STATE_COUNT_THRESHOLD` number
@@ -155,15 +155,13 @@ class TLDetector(object):
         # cv.namedWindow('input_image', cv.WINDOW_NORMAL)
         # cv.imshow('input_image', cv_image)
         # cv.waitKey(1)
-        filename = 'data/light'+ str(self.light_image_num)+'.png'
-        cv.imwrite(filename, cv_image)
+        # self.light_image_num = self.light_image_num + 1
+        # filename = 'data/light_v2_'+ str(self.light_image_num)+'.png'
+        # cv.imwrite(filename, cv_image)
 
-        item = [filename,light.state]
-        self.csv_write.writerow(item)
-        self.light_image_num = self.light_image_num + 1
         #Get classification
-        #return self.light_classifier.get_classification(cv_image)
-        return light.state
+        return self.light_classifier.get_classification(cv_image)
+        #return light.state
         
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
