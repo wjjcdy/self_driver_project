@@ -42,6 +42,7 @@ class TLDetector(object):
         self.config = yaml.load(config_string)
         # List of positions that correspond to the line to stop in front of for a given intersection
         self.stop_line_positions = self.config['stop_line_positions']
+        self.is_site = self.config['is_site']    # get status the code is run sim or real world
 
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
@@ -59,7 +60,7 @@ class TLDetector(object):
 
         self.has_image = False
         self.light_image_num = 0
-        self.light_classifier = TLClassifier()
+        self.light_classifier = TLClassifier(self.is_site)
   
         self.light_image_cnt=0
         rospy.spin()

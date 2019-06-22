@@ -8,10 +8,13 @@ import cv2 as cv
 from styx_msgs.msg import TrafficLight
 
 class TLClassifier(object):
-    def __init__(self):
+    def __init__(self,is_site):
         # #TODO load classifier
         # Model preparation
         PATH_TO_FROZEN_GRAPH = 'light_classification/model/frozen_inference_graph_sim.pb'
+        if is_site:
+            PATH_TO_FROZEN_GRAPH = 'light_classification/model/frozen_inference_graph_site.pb'
+
         # PATH_TO_LABELS = 'light_classification/model/light.pbtxt'
         
         # load frozen tensorflow model into memory

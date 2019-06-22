@@ -1,6 +1,9 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package tl_detector 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-6-22
+* Add traffic light model which choiced based on traffic_light_config.yaml.
+
 2019-6-18
 * Add getting only classfied red max score 
 * Add return red light state only if max score bigger than thresh by set
