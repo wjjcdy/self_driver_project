@@ -1,6 +1,9 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package tl_detector 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-6-27
+* Impove the tensorflow classfied speed by configing the tensorflow sess in init
+
 2019-6-22
 * Add traffic light model which choiced based on traffic_light_config.yaml.
 
