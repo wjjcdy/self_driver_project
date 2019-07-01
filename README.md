@@ -1,6 +1,46 @@
+### Traffic Light detection model
+This node is used for publishing the stop pose base on nearest the traffic light is red or not. I used the KDTREE to find the closest the point in the waypoints between the pose of the car and the pose of the traffic light. If the traffic light is red, the node would publish the stop point. 
+
+### Traffic Light classifed 
+This part is used for classfied the traffic light is red or not. I created the model with using TensorFlow's Object Detection API. I refer to the following two blogs for training traffic light detection model.
+* [Tensorflow object detection API Installed](https://www.cnblogs.com/zongfa/p/9662832.html)
+**Importance: must download version 1.4.0,only with this version training mode which can work in this project well** 
+* [Tensorflow object detection API Course training my model](https://www.cnblogs.com/zongfa/p/9663649.html)
+
+The steps I created the classfied model is follows:
+* First, I used the this project to save the whole image to *.png file from the ros topic which is /image_color. The images include simulator and real world training bag.
+
+* I used the labelImg (https://github.com/tzutalin/labelImg)tool to label pictures manually. I labeled three kinds labels include red light, yellow light and green light. So that I can classfy the traffic light just based on detection not used classfied model. 
+
+* I trained the traffic light detection model based on two model architectures include Faster R-CNN
+Resnet 101 and ssd_mobilenet_v1_coco. By comparison detecion reslut, at last I used the ssd_mobilenet_v1_coco model architecture.
+
+* I trained two models based on the simulator and the real world data bag, respectively. Because the feature of the traffic light from simulator and training bag is different.
+
+* I writed tl_classifier.py based on the object_detection_tutorial.ipynb(https://github.com/tensorflow/models/tree/master/research/object_detection).
+
+The classified result:
+* I test the traffic light detection function in the simulator with site.launch. The detection rate is very well.The classifier result examples:
+![alt text](./imgs/red_sim.png "red")
+![alt text](./imgs/green_sim.png "green")
+
+* I test the traffic light detection function with the real world training bag. It can detect the traffic light detection well. But it can't classfy the light is red or other color. The classfied rate is very low. The classifier result bad examples:
+![alt text](./imgs/red_site.png "red")
+![alt text](./imgs/green_site.png "green")
+
+So I created a simple classifier depend on the color characteristics of the light. 
+
+#### simple light classifier based on color
+1. I removed the topest and bottomest part of the light image for Denoising.
+2. I splited the image into three parts at height. The top image is the pose of red light. The middle is yellow. The bottom is green.
+3. I converted image from BGR to HSV format. The 3rd channel of HSV image is brightness. 
+4. I can get the means of three parts of brightness. If the brightness mean of the red part is biggest. The light is red.
+![alt text](./imgs/red_site_op.jpeg "red")
+![alt text](./imgs/green_site_op.jpeg "green")
+
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
-Please use **one** of the two installation options, either native **or** docker installation.
+Please use **one** of the two installation options, either native i**or** docker installation.
 
 ### Native Installation
 
