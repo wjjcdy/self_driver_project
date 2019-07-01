@@ -3,9 +3,12 @@ Changelog for package tl_detector
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 2019-7-1
 * Fix a bug, first define every variable before Subscriber
+* Fix a bug, line 183 in tl_detector.py, the code block should right shift
+* Fix the rate for process traffic light image from each 3 images to 2 images
 * Add a image copy for detection  
 * Add a simple classfied function based on light color for real test bag, 
   because error classfied rate of the real image is too high. But the traffic light detection is ok 
+* Add real test line 198 in in tl_detector.py, because the training bag do not have the car pose
 
 2019-6-29 
 * Add draw result rectangular only the result socre beyone thresh setted
