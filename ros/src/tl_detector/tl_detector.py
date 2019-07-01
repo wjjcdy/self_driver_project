@@ -193,6 +193,10 @@ class TLDetector(object):
             if closest_light:
                 state = self.get_light_state(closest_light)
                 return line_wp_idx, state
+        
+        # just for test
+        if self.is_site:
+            state = self.get_light_state(closest_light)
         return -1, TrafficLight.UNKNOWN
 
 if __name__ == '__main__':
