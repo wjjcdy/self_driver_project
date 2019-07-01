@@ -4,20 +4,21 @@ This node is used for publishing the stop pose base on nearest the traffic light
 ### Traffic Light classifed 
 This part is used for classfied the traffic light is red or not. I created the model with using TensorFlow's Object Detection API. I refer to the following two blogs for training traffic light detection model.
 * [Tensorflow object detection API Installed](https://www.cnblogs.com/zongfa/p/9662832.html)
+
 **Importance: must download version 1.4.0,only with this version training mode which can work in this project well** 
 * [Tensorflow object detection API Course training my model](https://www.cnblogs.com/zongfa/p/9663649.html)
 
 The steps I created the classfied model is follows:
 * First, I used the this project to save the whole image to *.png file from the ros topic which is /image_color. The images include simulator and real world training bag.
 
-* I used the labelImg (https://github.com/tzutalin/labelImg)tool to label pictures manually. I labeled three kinds labels include red light, yellow light and green light. So that I can classfy the traffic light just based on detection not used classfied model. 
+* I used the [labelImg] (https://github.com/tzutalin/labelImg) tool to label pictures manually. I labeled three kinds labels include red light, yellow light and green light. So that I can classfy the traffic light just based on detection not used classfied model. 
 
 * I trained the traffic light detection model based on two model architectures include Faster R-CNN
 Resnet 101 and ssd_mobilenet_v1_coco. By comparison detecion reslut, at last I used the ssd_mobilenet_v1_coco model architecture.
 
 * I trained two models based on the simulator and the real world data bag, respectively. Because the feature of the traffic light from simulator and training bag is different.
 
-* I writed tl_classifier.py based on the object_detection_tutorial.ipynb(https://github.com/tensorflow/models/tree/master/research/object_detection).
+* I writed tl_classifier.py based on the [object_detection_tutorial.ipynb](https://github.com/tensorflow/models/tree/master/research/object_detection).
 
 The classified result:
 * I test the traffic light detection function in the simulator with site.launch. The detection rate is very well.The classifier result examples:
@@ -25,8 +26,8 @@ The classified result:
 ![alt text](./imgs/green_sim.png "green")
 
 * I test the traffic light detection function with the real world training bag. It can detect the traffic light detection well. But it can't classfy the light is red or other color. The classfied rate is very low. The classifier result bad examples:
-![alt text](./imgs/red_site.png "red")
-![alt text](./imgs/green_site.png "green")
+![alt text](./imgs/red_real.png "red")
+![alt text](./imgs/green_real.png "green")
 
 So I created a simple classifier depend on the color characteristics of the light. 
 
