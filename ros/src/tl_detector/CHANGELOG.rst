@@ -1,6 +1,16 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Changelog for package tl_detector 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2019-7-1
+* Fix a bug, first define every variable before Subscriber
+* Add a image copy for detection  
+* Add a simple classfied function based on light color for real test bag, 
+  because error classfied rate of the real image is too high. But the traffic light detection is ok 
+
+2019-6-29 
+* Add draw result rectangular only the result socre beyone thresh setted
+* Reduce light_thresh of the result socre
+ 
 2019-6-27
 * Impove the tensorflow classfied speed by configing the tensorflow sess in init
 
